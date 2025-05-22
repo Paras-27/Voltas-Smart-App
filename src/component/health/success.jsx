@@ -74,7 +74,7 @@ export default function Achealthsuccess() {
       </div>
 
       <div className="font-semibold text-base mt-6 mb-2">Recent Activity</div>
-      <div className="bg-gray-50 rounded-xl p-4 mb-11">
+      <div className="bg-gray-50 rounded-xl p-4 mb-14">
         <div className="text-sm mb-3">
           ✅ Maintenance Completed
           <span className="block text-xs text-gray-500">Refrigerant Refill • Yesterday</span>

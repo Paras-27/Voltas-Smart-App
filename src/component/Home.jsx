@@ -48,7 +48,7 @@ export default function ACControl() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       {/* AC Image Section */}
-      <div className="w-full max-w-md flex flex-col items-center mb-6 pb-[4.5rem] border-b border-gray-200">
+      <div className="w-full max-w-md flex flex-col items-center mb-6 pb-[1.5rem] border-b border-gray-200">
         <div className={`transition-all duration-500 ${isOn ? "opacity-100" : "opacity-50"}`}>
           <div className="relative">
             <img 
@@ -139,7 +139,7 @@ export default function ACControl() {
         </Button>
 
         {/* Mode Buttons */}
-        <div className={`grid grid-cols-4 gap-4 w-full transition-opacity ${
+        <div className={`grid grid-cols-4 gap-4 w-full transition-opacity mb-14 ${
           !isOn ? "opacity-50 pointer-events-none" : ""
         }`}>
           {modes.map((mode) => (

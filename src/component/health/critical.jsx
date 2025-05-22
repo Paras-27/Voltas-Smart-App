@@ -56,7 +56,7 @@ export default function AChealthcritical() {
         <p className="text-xs text-gray-500 mt-3">Contact support or request a technician visit as soon as possible.</p>
       </div>
 
-      <div className="flex justify-between gap-2 mt-5 mb-11">
+      <div className="flex justify-between gap-2 mt-5 mb-14">
         <button className="flex-1 bg-blue-500 text-white py-2 rounded-xl font-semibold text-sm shadow">📄 View Logs</button>
         <button className="flex-1 bg-red-500 text-white py-2 rounded-xl font-semibold text-sm shadow">🛠️ Request Maintenance</button>
         <button className="flex-1 bg-gray-400 text-white py-2 rounded-xl font-semibold text-sm shadow">🔄 Refresh Status</button>
