@@ -13,7 +13,7 @@ const Footer = () => {
 
   const navItems = [
     { name: 'Home', icon: Home, path: '/' },
-    { name: 'AI', icon: Brain, path: '/ai-mode' },
+    { name: 'AI', icon: Brain, path: '/ai' },
     { name: 'Energy Manager', icon: BarChart2, path: '/energy' },
     { name: 'Health', icon: Settings, path: '/fault-prediction' },
     { name: 'Profile', icon: User, path: '/profile' },
