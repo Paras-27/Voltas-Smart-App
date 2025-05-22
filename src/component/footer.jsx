@@ -15,7 +15,7 @@ const Footer = () => {
     { name: 'Home', icon: Home, path: '/' },
     { name: 'AI', icon: Brain, path: '/ai' },
     { name: 'Energy Manager', icon: BarChart2, path: '/energy' },
-    { name: 'Health', icon: Settings, path: '/fault-prediction' },
+    { name: 'Health', icon: Settings, path: '/pred1' },
     { name: 'Profile', icon: User, path: '/profile' },
   ];
 
