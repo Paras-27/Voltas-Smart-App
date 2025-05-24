@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 to-blue-300 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-8 pt-0 rounded-lg shadow-lg w-full max-w-md">
         <div className="flex justify-center">
           <div className="w-48 h-48 rounded-full bg-blue-100 flex items-center justify-center">
             <img src="img/logo.jpg" alt="Voltas Logo" className="w-48 h-48" />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 to-blue-300 px-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md space-y-6">
+      <div className="bg-white p-8 pt-0 rounded-2xl shadow-xl w-full max-w-md space-y-6">
         
         {/* Logo Placeholder */}
         <div className="flex justify-center">

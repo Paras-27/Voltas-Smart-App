@@ -125,7 +125,7 @@ export default function AChealthcritical() {
       </div>
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 mb-14">
         <button className="flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-2 font-medium text-xs transition">
           <FileText className="w-4 h-4" /> Logs
         </button>

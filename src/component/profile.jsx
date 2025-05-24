@@ -1,8 +1,10 @@
 import React from "react";
-import { FiEdit, FiLogOut, FiUser, FiCpu, FiMoon, FiSun, FiSettings, FiAlertCircle } from "react-icons/fi";
+import { FiEdit, FiLogOut, FiUser, FiCpu, FiMoon, FiSun, FiSettings} from "react-icons/fi";
 import { FaGoogle, FaAmazon } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
+    const navigate = useNavigate();
   return (
     <div className="p-4 space-y-4 max-w-md mx-auto">
       <div className="bg-blue-100 shadow-md rounded-xl p-5">
@@ -112,17 +114,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Warning Messages */}
-          <div className="space-y-3">
-            <div className="p-3 bg-yellow-50 rounded-lg text-yellow-700 text-sm flex items-start gap-2">
-              <FiAlertCircle className="mt-0.5 flex-shrink-0" />
-              Changes may affect AI recommendations and energy efficiency.
-            </div>
-            <div className="p-3 bg-red-50 rounded-lg text-red-700 text-sm flex items-start gap-2">
-              <FiAlertCircle className="mt-0.5 flex-shrink-0" />
-              Filter needs cleaning! <a href="/pred1" className="font-medium underline ml-1">Details</a>
-            </div>
-          </div>
         </div>
 
         {/* Action Buttons */}
@@ -131,10 +122,13 @@ export default function Profile() {
             <FiEdit />
             Edit Profile
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg transition-colors">
-            <FiLogOut />
-            Logout
-          </button>
+          <button
+      onClick={() => navigate('/login')}
+      className="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+    >
+      <FiLogOut />
+      Logout
+    </button>
         </div>
       </div>
     </div>
