@@ -36,7 +36,7 @@ const SignUp = () => {
             Register
           </button>
         </form>
-        <p className="text-center text-sm text-gray-600 mt-4">
+        <p className="text-center text-sm text-gray-600 mt-4 mb-4">
           Already have an account?{' '}
           <Link to="/login" className="text-blue-700 font-semibold hover:underline">
             Login Here

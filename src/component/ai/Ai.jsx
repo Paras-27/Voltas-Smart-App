@@ -52,8 +52,8 @@ const Aimode = () => {
   }, []);
 
   return (
-    <div className="font-inter bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen p-6 text-gray-800">
-      <div className="max-w-md mx-auto bg-white rounded-3xl shadow-lg p-6">
+    <div className="font-inter min-h-screen p-6 text-gray-800">
+      <div className="max-w-md mx-auto bg-blue-100 rounded-3xl shadow-lg p-6">
         {/* Weather Section */}
         <div className="bg-gradient-to-r from-blue-400 to-cyan-300 rounded-2xl text-white p-5 shadow-md mb-6">
           <div className="mb-4">

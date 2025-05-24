@@ -12,12 +12,13 @@ import Achealthsuccess from "./component/health/success";
 import AChealthwarning from "./component/health/warning";
 import AChealthcritical from "./component/health/critical";
 import AChealth from "./component/health/header";
+import Profile from "./component/profile";
 
 
 function App() {
   return (
     <div className="app-container">
-      <div className="content-wrapper bg-blue-100">
+      <div className="content-wrapper bg-white">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -29,6 +30,7 @@ function App() {
           <Route path="/pred2" element={<AChealthwarning />} />
           <Route path="/pred3" element={<AChealthcritical/>} />
           <Route path="/pred" element={<AChealth/>} />
+          <Route path="/profile" element={<Profile/>} />
           {/* <Route path="/about" element={<About />} /> */}
         </Routes>
       </div>
