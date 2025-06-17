@@ -20,7 +20,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="fixed bottom-0 w-full bg-white shadow-md z-50 md:hidden">
+    <footer className="fixed bottom-0 w-full bg-white shadow-md z-50">
       <div className="flex justify-around items-center py-2">
         {navItems.map((item) => {
           const Icon = item.icon;
