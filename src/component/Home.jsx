@@ -1,17 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { FaFan, FaSnowflake, FaFire, FaRegClock, FaMinus, FaPlus, FaPowerOff, FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { Slider } from "./ai/slider";
-import { Button } from "./ai/button";
+import { 
+  FaFan, 
+  FaSnowflake, 
+  FaFire, 
+  FaRegClock, 
+  FaMinus, 
+  FaPlus, 
+  FaPowerOff, 
+  FaArrowUp, 
+  FaArrowDown, 
+  FaArrowLeft, 
+  FaArrowRight,
+  FaMoon,
+  FaLeaf,
+  FaLightbulb,
+  FaBolt
+} from "react-icons/fa";
+import { IoIosSync, IoIosTimer } from "react-icons/io";
+import { FaArrowsUpDown, FaArrowsLeftRight, FaWifi } from "react-icons/fa6";
+import { Slider } from "./ai/slider"; // Assuming these are correctly imported
+import { Button } from "./ai/button"; // Assuming these are correctly imported
+
+
+// A generic button component for reusability and cleaner code
+const ControlButton = ({ icon, text, onClick, isActive, isDisabled = false }) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={isDisabled}
+      className={`flex flex-col items-center justify-center p-3 rounded-xl shadow-md transition-all duration-300
+        ${
+          isActive
+            ? "bg-blue-500 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 hover:bg-gray-100"
+        }
+        ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}
+      `}
+    >
+      <div
+        className={`text-2xl ${isActive ? "text-white" : "text-gray-600"}`}
+      >
+        {icon}
+      </div>
+      <span className="text-sm mt-1 capitalize">{text}</span>
+    </button>
+  );
+};
+
 
 export default function ACControl() {
+  // YOUR ORIGINAL STATE
   const [temperature, setTemperature] = useState(24);
-  const [activeMode, setActiveMode] = useState("Fan");
+  const [activeMode, setActiveMode] = useState("Cool");
   const [isOn, setIsOn] = useState(true);
   const [animation, setAnimation] = useState("");
   const [showAirflowControls, setShowAirflowControls] = useState(false);
   const [upDownSwing, setUpDownSwing] = useState(false);
   const [leftRightSwing, setLeftRightSwing] = useState(false);
-  const [sliderValue, setSliderValue] = useState(24); // Separate state for smooth slider movement
+  const [sliderValue, setSliderValue] = useState(24);
+  
+  // NEW STATE FROM THE EXPANDED DESIGN
+  const [fanSpeed, setFanSpeed] = useState("Auto");
+  const [isVswing, setIsVswing] = useState(false);
+  const [isHswing, setIsHswing] = useState(false);
+  const [isSleepMode, setIsSleepMode] = useState(false);
+  const [isSaverMode, setIsSaverMode] = useState(false);
+  const [isLampOn, setIsLampOn] = useState(false);
+  const [isTurboMode, setIsTurboMode] = useState(false);
+  const [timerOn, setTimerOn] = useState(null);
+  const [timerOff, setTimerOff] = useState(null);
 
   // Sync temperature with slider value
   useEffect(() => {
@@ -53,11 +110,40 @@ export default function ACControl() {
 
   const toggleUpDownSwing = () => {
     setUpDownSwing(!upDownSwing);
+    // Also update the isVswing state for the new button
+    setIsVswing(!isVswing);
   };
 
   const toggleLeftRightSwing = () => {
     setLeftRightSwing(!leftRightSwing);
+    // Also update the isHswing state for the new button
+    setIsHswing(!isHswing);
   };
+
+  // Expanded functionality handlers
+  const toggleVswing = () => setIsVswing(!isVswing);
+  const toggleHswing = () => setIsHswing(!isHswing);
+  const toggleSleepMode = () => setIsSleepMode(!isSleepMode);
+  const toggleSaverMode = () => setIsSaverMode(!isSaverMode);
+  const toggleLamp = () => setIsLampOn(!isLampOn);
+  const toggleTurboMode = () => setIsTurboMode(!isTurboMode);
+  
+  const handleSetTimer = (type) => {
+    const time = prompt(`Enter ${type} time (e.g., 2h 30m):`);
+    if (time) {
+      if (type === "ON") setTimerOn(time);
+      if (type === "OFF") setTimerOff(time);
+    }
+  };
+
+  const toggleFanSpeed = () => {
+    if (!isOn) return;
+    const speeds = ["Auto", "Low", "Medium", "High"];
+    const currentIndex = speeds.indexOf(fanSpeed);
+    const nextIndex = (currentIndex + 1) % speeds.length;
+    setFanSpeed(speeds[nextIndex]);
+  };
+
 
   useEffect(() => {
     if (activeMode) {
@@ -69,34 +155,52 @@ export default function ACControl() {
   // Calculate circle progress based on temperature (16-30°C range)
   const progress = ((sliderValue - 16) / (30 - 16)) * 100;
 
-  const modes = [
-    { name: "timer", icon: <FaRegClock /> },
-    { name: "Fan", icon: <FaFan /> },
-    { name: "Cool", icon: <FaSnowflake /> },
-    { name: "Heat", icon: <FaFire /> },
+  // Buttons data for the grid layout
+  const allButtons = [
+    { name: "V.SWING", icon: <FaArrowsUpDown />, action: toggleVswing, isActive: isVswing },
+    { name: "SLEEP", icon: <FaMoon />, action: toggleSleepMode, isActive: isSleepMode },
+    { name: "H.SWING", icon: <FaArrowsLeftRight />, action: toggleHswing, isActive: isHswing },
+    { name: "SAVER", icon: <FaLeaf />, action: toggleSaverMode, isActive: isSaverMode },
+    { name: "LAMP", icon: <FaLightbulb />, action: toggleLamp, isActive: isLampOn },
+    { name: "TURBO", icon: <FaBolt />, action: toggleTurboMode, isActive: isTurboMode },
+    { name: "TIMER ON", icon: <FaRegClock />, action: () => handleSetTimer("ON"), isActive: !!timerOn },
+    { name: "SET", icon: <IoIosTimer />, action: () => alert("Set function pressed!"), isActive: false },
+    { name: "TIMER OFF", icon: <FaRegClock />, action: () => handleSetTimer("OFF"), isActive: !!timerOff },
+    { name: "TEMP", icon: <FaMinus />, action: () => {}, isActive: false }, // Placeholder for Temp button
+    { name: "WIFI/ADJ", icon: <FaWifi />, action: () => alert("Wi-Fi/Adjust pressed!"), isActive: false }, // Placeholder for Wi-Fi button
+    { name: "MODE", icon: <IoIosSync />, action: () => {
+        const modes = ["Cool", "Dry", "Fan", "Heat"];
+        const currentIndex = modes.indexOf(activeMode);
+        const nextIndex = (currentIndex + 1) % modes.length;
+        setActiveMode(modes[nextIndex]);
+      }, isActive: false },
+    { name: "FAN", icon: <FaFan />, action: toggleFanSpeed, isActive: false },
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-blue-100">
-      {/* AC Image Section */}
-      <div className="w-full max-w-md flex flex-col items-center mb-6 pb-[1.5rem] border-b border-gray-200">
-        <div className={`transition-all duration-500 ${isOn ? "opacity-100" : "opacity-50"}`}>
-          <div className="relative">
-            <img 
-              src="/img/ac.png" 
-              alt="AC Unit" 
-              className="w-[19rem] h-24 object-contain"
-            />
-            <div className={`absolute top-0 right-0 w-4 h-4 rounded-full ${
-              isOn ? "bg-green-500 animate-pulse" : "bg-gray-400"
-            }`}></div>
+    <div className="flex flex-col items-center justify-start min-h-screen p-4 bg-blue-100">
+      <div className="w-full max-w-md mt-8 flex flex-col items-center">
+
+        {/* AC Image Section (from your code) */}
+        <div className="w-full max-w-md flex flex-col items-center mb-6 border-b border-gray-200">
+          <div className={`transition-all duration-500 ${isOn ? "opacity-100" : "opacity-50"}`}>
+            <div className="relative">
+              <img 
+                src="/img/ac.png" 
+                alt="AC Unit" 
+                className="w-[19rem] h-24 object-contain"
+              />
+              <div className="absolute bottom-[-1.5rem] left-1/2 top-1/4 -translate-x-1/2 text-lg text-black">
+26°C
+</div>
+              <div className={`absolute top-0 right-0 w-4 h-4 rounded-full ${
+                isOn ? "bg-green-500 animate-pulse" : "bg-gray-400"
+              }`}></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Controls Section - Centered */}
-      <div className="w-full max-w-md flex flex-col items-center">
-        {/* Temperature Ring - Now properly synced with slider */}
+        {/* Temperature Ring (from your code) */}
         <div className={`relative w-48 h-48 flex items-center justify-center transition-all duration-300 ${
           !isOn ? "opacity-50" : ""
         }`}>
@@ -107,8 +211,8 @@ export default function ACControl() {
               fill="none"
               strokeDasharray="100, 100"
               d="M18 2.0845
-                a 15.9155 15.9155 0 0 1 0 31.831
-                a 15.9155 15.9155 0 0 1 0 -31.831"
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
               className={`stroke-current ${isOn ? "text-blue-400" : "text-gray-300"}`}
@@ -116,8 +220,8 @@ export default function ACControl() {
               fill="none"
               strokeDasharray={`${progress}, 100`}
               d="M18 2.0845
-                a 15.9155 15.9155 0 0 1 0 31.831
-                a 15.9155 15.9155 0 0 1 0 -31.831"
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
           </svg>
           <div className="text-center">
@@ -130,8 +234,8 @@ export default function ACControl() {
           </div>
         </div>
 
-        {/* Temperature Controls */}
-        <div className={`flex items-center gap-4 my-6 w-full transition-opacity ${
+        {/* Temperature Controls (from your code) */}
+        <div className={`flex items-center gap-4 my-6 w-full max-w-xs transition-opacity ${
           !isOn ? "opacity-50" : ""
         }`}>
           <button 
@@ -159,7 +263,7 @@ export default function ACControl() {
           </button>
         </div>
 
-        {/* Power Button */}
+        {/* Power Button (from your code) */}
         <Button 
           onClick={handlePowerToggle}
           className={`mb-6 transition-all duration-300 shadow-lg ${
@@ -176,117 +280,47 @@ export default function ACControl() {
           </div>
         </Button>
 
-        {/* Airflow Controls */}
-        {showAirflowControls && (
-          <div className={`w-full mb-6 p-4 bg-white rounded-xl shadow-md transition-all duration-300 ${
-            !isOn ? "opacity-50 pointer-events-none" : ""
-          }`}>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex items-center gap-4">
-                  <button 
-                    onClick={toggleUpDownSwing}
-                    disabled={!isOn}
-                    className={`p-3 rounded-full transition-all ${
-                      upDownSwing ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <FaArrowUp />
-                  </button>
-                  <button 
-                    onClick={toggleUpDownSwing}
-                    disabled={!isOn}
-                    className={`p-3 rounded-full transition-all ${
-                      upDownSwing ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <FaArrowDown />
-                  </button>
-                </div>
-                <span className="text-sm text-gray-600">Up/Down Swing</span>
-              </div>
-              
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex items-center gap-4">
-                  <button 
-                    onClick={toggleLeftRightSwing}
-                    disabled={!isOn}
-                    className={`p-3 rounded-full transition-all ${
-                      leftRightSwing ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <FaArrowLeft />
-                  </button>
-                  <button 
-                    onClick={toggleLeftRightSwing}
-                    disabled={!isOn}
-                    className={`p-3 rounded-full transition-all ${
-                      leftRightSwing ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    <FaArrowRight />
-                  </button>
-                </div>
-                <span className="text-sm text-gray-600">Left/Right Swing</span>
-              </div>
-              
-              <Button 
-                onClick={toggleAirflowControls}
-                className="mt-2 bg-gray-500 text-white hover:bg-gray-200 transition-colors"
-              >
-                Close
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Mode Buttons */}
-        <div className={`grid grid-cols-5 gap-4 w-full transition-opacity mb-14 ${
-          !isOn ? "opacity-50 pointer-events-none" : ""
-        }`}>
-          {modes.map((mode) => (
-            <button
-              key={mode.name}
-              onClick={() => setActiveMode(mode.name)}
-              disabled={!isOn}
-              className={`flex flex-col items-center p-3 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg ${
-                activeMode === mode.name 
-                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg" 
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              } ${
-                animation === "mode-change" && activeMode === mode.name 
-                  ? "scale-105 ring-2 ring-blue-300" 
-                  : ""
-              }`}
-            >
-              <span className={`text-lg ${
-                activeMode === mode.name ? "text-white" : "text-blue-500"
-              }`}>
-                {mode.icon}
-              </span>
-              <span className="text-sm mt-1 capitalize">{mode.name}</span>
-            </button>
-          ))}
+        {/* Expanded Controls Section (from my code) */}
+        <div className="w-full max-w-md flex flex-col items-center">
           
-          {/* Airflow Button */}
-          <button
-            onClick={toggleAirflowControls}
-            disabled={!isOn}
-            className={`flex flex-col items-center p-3 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg ${
-              showAirflowControls 
-                ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg" 
-                : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
-            <span className={`text-lg ${
-              showAirflowControls ? "text-white" : "text-blue-500"
-            }`}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </span>
-            <span className="text-sm mt-1 capitalize">Airflow</span>
-          </button>
+          {/* Main Controls row */}
+          <div className={`grid grid-cols-3 gap-4 mb-6 w-full ${!isOn ? "opacity-50 pointer-events-none" : ""}`}>
+            <ControlButton
+              icon={<IoIosSync />}
+              text="MODE"
+              onClick={() => {
+                const modes = ["Cool", "Dry", "Fan", "Heat"];
+                const currentIndex = modes.indexOf(activeMode);
+                const nextIndex = (currentIndex + 1) % modes.length;
+                setActiveMode(modes[nextIndex]);
+              }}
+              isDisabled={!isOn}
+              isActive={false}
+            />
+            <ControlButton icon={<FaFan />} text="FAN" onClick={toggleFanSpeed} isDisabled={!isOn} isActive={false} />
+            <ControlButton
+              icon={<FaArrowsUpDown />}
+              text="V.SWING"
+              onClick={toggleVswing}
+              isDisabled={!isOn}
+              isActive={isVswing}
+            />
+          </div>
+
+          {/* All other buttons, arranged in a grid */}
+          <div className={`grid grid-cols-3 gap-4 w-full ${!isOn ? "opacity-50 pointer-events-none" : ""}`}>
+            {allButtons.filter(btn => ["SLEEP", "H.SWING", "SAVER", "LAMP", "TURBO", "TIMER ON", "SET", "TIMER OFF", "TEMP", "WIFI/ADJ"].includes(btn.name)).map((feature, index) => (
+              <ControlButton
+                key={index}
+                icon={feature.icon}
+                text={feature.name}
+                onClick={feature.action}
+                isDisabled={!isOn}
+                isActive={feature.isActive}
+              />
+            ))}
+          </div>
+
         </div>
       </div>
     </div>
